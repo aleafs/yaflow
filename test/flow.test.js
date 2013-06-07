@@ -7,8 +7,21 @@ var yaflow = require(__dirname + '/../');
 
 describe('yaflow interface', function () {
 
-  it('aa', function (done) {
-    done();
+  it('should_flow_works_fine', function (done) {
+    var flow = yaflow.create();
+    flow.use(function (a, next) {
+      a.should.not.have.property('b');
+      a.b = 'B';
+      process.nextTick(next);
+    });
+    flow.use(function (a, next) {
+      a.c = 'C';
+      a.should.have.property('b', 'B');
+      next();
+    }).use(function (a) {
+      a.should.eql({'b' : 'B', 'c' : 'C'});
+      done();
+    }).execute({});
   });
 
 });
