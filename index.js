@@ -1,0 +1,5 @@
+/* vim: set expandtab tabstop=2 shiftwidth=2 foldmethod=marker: */
+
+"use strict";
+
+module.exports = require([__dirname, process.env.YAFLOW_COV ? 'lib-cov' : 'lib', 'flow.js'].join('/'));
