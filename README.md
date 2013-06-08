@@ -11,17 +11,19 @@
 
 var flow = require('yaflow').create();
 
-flow.use(function (req, res, next) {
+flow.use(function (req, res, next, stop) {
   process.nextTick(function () {
 	next();
   });
 });
 
-flow.use(function (req, res, next) {
+flow.use(function (req, res, next, stop) {
   // ...
 });
 
-flow.execute(req, res);
+flow.execute(req, res, function () {
+  console.log(res);
+});
 
 ```
 
