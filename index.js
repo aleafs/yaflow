@@ -2,4 +2,4 @@
 
 "use strict";
 
-module.exports = require([__dirname, process.env.YAFLOW_COV ? 'lib-cov' : 'lib', 'flow.js'].join('/'));
+module.exports = require(__dirname + '/lib/flow.js');
