@@ -5,6 +5,13 @@
 var should = require('should');
 var yaflow = require(__dirname + '/../');
 
+var That = function () {
+  this.count = 0;
+};
+That.prototype.abort = function () {
+  this.count++;
+};
+
 describe('yaflow interface', function () {
 
   /* {{{ should_flow_works_fine() */
@@ -50,6 +57,7 @@ describe('yaflow interface', function () {
   });
   /* }}} */
 
+  /* {{{ should_empty_stack_works_fine() */
   it('should_empty_stack_works_fine', function (done) {
     var flow = yaflow.create();
     flow.execute({'a' : 1}, function (res) {
@@ -57,5 +65,27 @@ describe('yaflow interface', function () {
       done();
     });
   });
+  /* }}} */
+
+  /* {{{ should_with_object_works_fine() */
+  it('should_with_object_works_fine', function (done) {
+
+    var flow = yaflow.create();
+    flow.use(function (o, next) {
+      process.nextTick(function () {
+        o.abort();
+        next();
+      });
+    });
+
+    flow.execute(new That(), function (res) {
+      res.should.have.property('count', 1);
+      res.abort();
+      res.should.have.property('count', 2);
+      done();
+    });
+
+  });
+  /* }}} */
 
 });
