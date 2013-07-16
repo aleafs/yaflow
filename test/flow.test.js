@@ -78,10 +78,12 @@ describe('yaflow interface', function () {
       });
     });
 
-    flow.execute(new That(), function (res) {
+    var _me = new That();
+    flow.execute(_me, function (res) {
       res.should.have.property('count', 1);
       res.abort();
       res.should.have.property('count', 2);
+      res.should.equal(_me);
       done();
     });
 
